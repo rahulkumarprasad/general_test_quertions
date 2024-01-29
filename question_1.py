@@ -8,7 +8,7 @@ class RateLimiter:
         self.max_request = 20
         self.total_num_req_maper = {}
         self.last_hit_time_maper = {}
-        self.max_waiting_seconds = 30
+        self.max_waiting_seconds = 2
     
     def check_num_of_request_in_default_time(self,ip_address):
         
@@ -16,14 +16,23 @@ class RateLimiter:
             total_req = self.total_num_req_maper[ip_address]
             total_sec = (datetime.now() - self.last_hit_time_maper[ip_address]).total_seconds()
             print(total_req, total_sec)
+
             if total_sec < self.default_time_int and total_req <= self.max_request:
                 self.total_num_req_maper[ip_address] = self.total_num_req_maper[ip_address]+1
                 return True
+            
+            elif total_sec >= self.default_time_int and total_req <= self.max_request:
+                self.last_hit_time_maper[ip_address] = datetime.now()
+                self.total_num_req_maper[ip_address] = 1
+                return True
+
             else:
+
                 if total_sec-self.default_time_int >= self.max_waiting_seconds:
                     self.last_hit_time_maper[ip_address] = datetime.now()
                     self.total_num_req_maper[ip_address] = 1
                     return True
+
                 return False
         else:
             self.total_num_req_maper[ip_address] = 1
@@ -37,6 +46,8 @@ class RateLimiter:
             return "request over limit"
             
 obj = RateLimiter()
-for i in range(200):
-    sleep(1)
+for i in range(250):
+    #sleep(1)
+    if i%50 == 0:
+        sleep(1)
     print(obj.isAllowed(1))
