@@ -15,18 +15,22 @@ Explanation: The absolute difference between the first and last element must be 
 print("Try programiz.pro")
 
 
+# Online Python compiler (interpreter) to run Python online.
+# Write Python 3 code in this online editor and run it.
+print("Try programiz.pro")
+
+print("Try programiz.pro")
+
 def subarray(arr, k):
     equal_to_k_result = []
     
-    print(list(range(len(arr))))
     for i in range(len(arr)):
         sm = arr[i]
         j = i+1
         while(j<len(arr)):
-            if i==3:
-                print("sub =", sm)
-            sm -= arr[j]
-            if sm == k or sm == -k:
+            sm = abs(abs(sm) - abs(arr[j]))
+            print("sub =",i,j, arr[j], sm)
+            if sm == k:
                 equal_to_k_result.append([i,j])
             j+=1
         
@@ -43,7 +47,7 @@ def subarray(arr, k):
             end = ind[1]
             sm2 = 0
             while(start<=end):
-                sm2+=arr[start]
+                sm2+=abs(arr[start])
                 start+=1
             
             sum_all.append(sm2)
@@ -53,21 +57,3 @@ def subarray(arr, k):
         return greater
     
 print((subarray([-11,-12,-23,-2,4,5,6], 3)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
